@@ -1,9 +1,9 @@
 <template>
 	<view class="tab">
 		<!-- 横向滚动区域 -->
-		<scroll-view scroll-x="true" class="tab-scroll">
+		<scroll-view scroll-x="true" :scroll-into-view="currentIndex" :scroll-with-animation="true" class="tab-scroll">
 			<view class="tab-scroll-box">
-				<view class="tab-scroll-item" :class="{active: activeIndex===index}" v-for="(item, index) in labList"
+				<view :id="`item${index}`" class="tab-scroll-item" :class="{active: activeIndex===index}" v-for="(item, index) in labelList"
 					:key="index" @click="navClickFn(index)">
 					{{item.name}}
 				</view>
@@ -21,11 +21,19 @@
 		name: "TabBar",
 		data() {
 			return {
-				activeIndex: 0,
+				currentIndex: ''
 			};
 		},
-		props:{
-			labList:Array
+		props: {
+			labelList: Array,
+			activeIndex: Number,
+		},
+
+		watch: {
+			// 负责监控swiper和顶部active(NavBar)的对应一致
+			activeIndex(index) {
+				this.currentIndex = `item${index}`
+			}
 		},
 		methods: {
 			goLabelAdmin() {
@@ -34,7 +42,8 @@
 				});
 			},
 			navClickFn(index) {
-				this.activeIndex = index;
+				// this.activeIndex = index;
+				this.$emit('changeCurrentIndex', index)
 			},
 		},
 	}

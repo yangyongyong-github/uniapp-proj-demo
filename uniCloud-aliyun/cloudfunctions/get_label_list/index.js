@@ -5,10 +5,9 @@ exports.main = async (event, context) => {
 	
 	const collection = db.collection('label')
 	const res = await collection.get()
-	// console.log(res)
-	//返回数据给客户端
+
 	return {
 		code: 0,
-		labelList: res.data
+		data: res.data
 	}
 };
